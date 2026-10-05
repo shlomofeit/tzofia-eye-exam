@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export async function createRepo(collection) {
+export function createRepo(collection) {
   async function createAlert(obj) {
     const { _id, ...alert } = obj;
     const result = await collection.insertOne(obj);
