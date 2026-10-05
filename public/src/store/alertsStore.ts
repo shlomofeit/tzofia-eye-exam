@@ -16,12 +16,14 @@ interface AlertsState {
   search: string;
   arena: ArenaFilter;
   priority: PriorityFilter;
+  selectedAlert: Alert | null;
   setAlerts: () => void;
   removeAlert: (id: string) => void;
   setSearch: (id: string) => void;
   setArena: (arena: ArenaFilter) => void;
   setPriority: (priority: PriorityFilter) => void;
   setNewAlert: (alert: AlertInput) => void;
+  setSelectedAlert: (id: string) => void;
 }
 
 export const useAlertsStore = create<AlertsState>()((set) => ({
@@ -31,6 +33,7 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   search: "",
   arena: "All",
   priority: "All",
+  selectedAlert: null,
 
   setAlerts: async () => {
     set({ isLoading: true, error: null });
@@ -84,6 +87,23 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
         err.response?.data?.error ||
         err.response?.data?.message ||
         "Failed to fetch alerts";
+      set({
+        error: msg,
+        isLoading: false,
+      });
+    }
+  },
+
+  setSelectedAlert: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axios.get(`${BASE_URL}/${id}`);
+      set({ selectedAlert: res.data.data, isLoading: false });
+    } catch (err: any) {
+      const msg =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Failed to fetch alert";
       set({
         error: msg,
         isLoading: false,
