@@ -28,3 +28,9 @@ export interface AlertFormValues {
   lon: string;
   lat: string;
 }
+
+export interface FilterValues {
+  search: string;
+  arena: ArenaFilter;
+  priority: PriorityFilter;
+}
