@@ -30,7 +30,7 @@ export function createRepo(collection) {
   async function updateById(id, obj) {
     const result = await collection.findOneAndUpdate(
       { _id: new ObjectId(id) },
-      { $set: { obj } },
+      { $set: obj },
       { returnDocument: "after" },
     );
 
