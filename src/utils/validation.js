@@ -12,7 +12,7 @@ export const alertSchema = z.object({
     "Priority must be Low, Medium, High or Critical",
   ),
   arena: z.enum(
-    ["North", "Soth", "Center"],
+    ["North", "South", "Center"],
     "Arena must be North, South or Center",
   ),
   status: z.enum(["Active", "Handled"], "Status must be Active or Handled"),
