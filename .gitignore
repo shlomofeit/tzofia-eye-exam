@@ -1,4 +1,5 @@
-package*.json
+package-*.json
 node_modules
 .env
+# קבצי המבחן - לא רלוונטי לגיט
 exam-files
