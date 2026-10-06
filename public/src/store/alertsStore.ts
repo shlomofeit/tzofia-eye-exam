@@ -6,6 +6,7 @@ import type {
   ArenaFilter,
   PriorityFilter,
 } from "../types/alert";
+import { getAuth } from "./authStore";
 
 const BASE_URL = "http://localhost:3001/api/alerts";
 
@@ -45,7 +46,7 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   setAlerts: async () => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axios.get(BASE_URL);
+      const res = await axios.get(BASE_URL, getAuth());
       set({ alerts: res.data.data, isLoading: false });
     } catch (err) {
       const msg = getErrorDetails(err, "Failed to fetch alerts");
@@ -59,7 +60,7 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   setNewAlert: async (alert) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axios.post(`${BASE_URL}`, alert);
+      const res = await axios.post(`${BASE_URL}`, alert, getAuth());
 
       const newAlert: Alert = res.data.data;
       set((state) => ({
@@ -79,7 +80,7 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   removeAlert: async (id) => {
     set({ isLoading: true, error: null });
     try {
-      await axios.delete(`${BASE_URL}/${id}`);
+      await axios.delete(`${BASE_URL}/${id}`, getAuth());
       set((state) => ({
         alerts: state.alerts.filter((alert) => alert.id !== id),
       }));
@@ -95,7 +96,7 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   setSelectedAlert: async (id) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axios.get(`${BASE_URL}/${id}`);
+      const res = await axios.get(`${BASE_URL}/${id}`, getAuth());
       set({ selectedAlert: res.data.data, isLoading: false });
     } catch (err) {
       const msg = getErrorDetails(err, "Failed to fetch alerts");
@@ -109,7 +110,7 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   setUpdateAlert: async (id, alert) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axios.put(`${BASE_URL}/${id}`, alert);
+      const res = await axios.put(`${BASE_URL}/${id}`, alert, getAuth());
       set((state) => ({
         alerts: state.alerts.map((a) => (a.id === id ? res.data.data : a)),
       }));
