@@ -9,30 +9,37 @@ import type {
 } from "../types/alert";
 
 interface AlertFormProps {
-  newValues: AlertFormValues;
+  fieldValue: AlertFormValues;
+  buttonText: string;
   onSubmit: (alert: AlertInput) => void;
 }
 
 function alertValidation(values: AlertFormValues): AlertFormErrors {
   const error: AlertFormErrors = {};
-  if (values.displayName.length < 2)
+  if (values.displayName.trim().length < 2)
     error.displayName = "Display name must have at least 2 charaterce";
-  if (values.description.length < 2)
+  if (values.description.trim().length < 2)
     error.description = "Description name must have at least 2 charaterce";
   if (
-    values.lon === "" ||
+    values.lon.trim() === "" ||
     Number(values.lon) < -180 ||
-    Number(values.lon) > 180
+    Number(values.lon) > 180 ||
+    Number.isNaN(values.lon)
   )
     error.lon = "Lon must be greater than -180 and less than 180";
-  if (values.lat === "" || Number(values.lat) < -90 || Number(values.lat) > 90)
+  if (
+    values.lat.trim() === "" ||
+    Number(values.lat) < -90 ||
+    Number(values.lat) > 90 ||
+    Number.isNaN(values.lat)
+  )
     error.lon = "Lat must be greater than -90 and less than 900";
 
   return error;
 }
 
-const AlertAddForm = ({ newValues, onSubmit }: AlertFormProps) => {
-  const [values, setValues] = useState<AlertFormValues>(newValues);
+const AlertAddForm = ({ fieldValue, buttonText, onSubmit }: AlertFormProps) => {
+  const [values, setValues] = useState<AlertFormValues>(fieldValue);
   const [errors, setErrors] = useState<AlertFormErrors>({});
 
   function handleSubmit() {
@@ -53,7 +60,7 @@ const AlertAddForm = ({ newValues, onSubmit }: AlertFormProps) => {
 
   return (
     <form
-      className="add-form"
+      className="form"
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
@@ -143,7 +150,7 @@ const AlertAddForm = ({ newValues, onSubmit }: AlertFormProps) => {
         {errors.lat && <p className="error">{errors.lat}</p>}
       </div>
 
-      <button type="submit">Add</button>
+      <button type="submit">{buttonText}</button>
     </form>
   );
 };
