@@ -29,6 +29,13 @@ export interface AlertFormValues {
   lat: string;
 }
 
+export interface AlertFormErrors {
+  displayName?: string;
+  description?: string;
+  lon?: string;
+  lat?: string;
+}
+
 export interface FilterValues {
   search: string;
   arena: ArenaFilter;
