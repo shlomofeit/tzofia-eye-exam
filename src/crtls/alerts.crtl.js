@@ -27,7 +27,9 @@ export async function alertCreatorCrtls(req, res) {
 }
 
 export async function getAll(req, res) {
-  const result = await createRepo(collection).getAlerts();
+  const filter =
+    req.user.role === "arena_user" ? { arena: req.user.assignedArena } : {};
+  const result = await createRepo(collection).getAlerts(filter);
 
   res.status(200).json({ success: true, data: result });
 }
