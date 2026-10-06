@@ -14,8 +14,6 @@ const Login = () => {
 
   return (
     <main className="main">
-      <h1>Welcome!</h1>
-      <br />
       <h2>Login</h2>
       {error && <p className="error">{error}</p>}
       <form
@@ -41,7 +39,9 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">{isLoading ? "logging..." : "Login"}</button>
+        <button type="submit" disabled={isLoading || !username || !password}>
+          {isLoading ? "logging..." : "Login"}
+        </button>
       </form>
     </main>
   );

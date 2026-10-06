@@ -1,15 +1,10 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Navbar from "./Navbar";
 
 export default function Layout() {
   return (
     <>
-      <header className="app-header">
-        <h1>ein-tzofia</h1>
-        <nav>
-          <Link to="/">Alerts</Link>
-          <Link to="/alerts/new">Add alert</Link>
-        </nav>
-      </header>
+      <Navbar />
       <main className="container">
         <Outlet />
       </main>

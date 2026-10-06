@@ -7,7 +7,7 @@ interface AlertListProps {
 }
 
 export default function AlertList({ alerts, onDelete }: AlertListProps) {
-  if (alerts.length === 0) return <p>No alerts yet ..</p>;
+  if (alerts.length === 0) return <p>No alerts yet...</p>;
 
   return (
     <table className="alerts-table">
