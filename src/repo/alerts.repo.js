@@ -8,8 +8,8 @@ export function createRepo(collection) {
     return { id: result.insertedId.toString(), ...alert };
   }
 
-  async function getAlerts() {
-    const result = await collection.find({}).toArray();
+  async function getAlerts(filter = {}) {
+    const result = await collection.find(filter).toArray();
     if (!result) return [];
     result.map(
       (alert) => ((alert.id = alert._id.toString()), delete alert._id),
