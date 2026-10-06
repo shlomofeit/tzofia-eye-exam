@@ -11,6 +11,7 @@ import { errorCreator } from "../utils/errorHandler.js";
 const db = await getDb();
 const collection = db.collection("users");
 await collection.createIndex({ email: 1 }, { unique: true });
+await collection.createIndex({ username: 1 }, { unique: true });
 
 export async function register(req, res) {
   const user = await registerService(req.body);
@@ -20,8 +21,7 @@ export async function register(req, res) {
 }
 
 export async function login(req, res) {
-  const { username, password } = req.body;
-  await userValidationService(req.body);
+  const { username, password } = await userValidationService(req.body);
   const exist = await userRepo(collection).getUserByUsername(username);
   if (!exist) throw errorCreator(401, "Invalid credentials");
 

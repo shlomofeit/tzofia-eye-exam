@@ -18,9 +18,7 @@ const Navbar = () => {
       <h1>ein-tzofia</h1>
       <nav>
         <Link to="/">Alerts</Link>
-        {user.role !== "general_user" && (
-          <Link to="/alerts/new">Add alert</Link>
-        )}
+        <Link to="/alerts/new">Add alert</Link>
         {user.role === "admin" && <Link to="/admin/users">Users</Link>}
       </nav>
       <div className="user-info">

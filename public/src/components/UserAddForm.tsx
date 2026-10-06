@@ -52,6 +52,7 @@ const UserAddForm = ({ onSubmit }: UserProps) => {
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
+          setValues(emptyValues);
         }}
         className="form"
       >

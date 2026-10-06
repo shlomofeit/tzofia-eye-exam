@@ -30,6 +30,7 @@ export async function getAll(req, res) {
   const filter =
     req.user.role === "arena_user" ? { arena: req.user.assignedArena } : {};
   const result = await createRepo(collection).getAlerts(filter);
+  console.log(result);
 
   res.status(200).json({ success: true, data: result });
 }
@@ -44,9 +45,16 @@ export async function getById(req, res) {
 }
 
 export async function updateById(req, res) {
-  const alert = req.body;
+  let alert = req.body;
   const id = req.params.id;
   verifyId(id);
+
+  if (req.user.role === "general_user") {
+    if (!alert || !alert.status)
+      throw errorCreator(400, "general_user can update status only");
+    alert = { status: alert.status };
+  }
+
   const validCheck = await updateAlertService(alert);
   const exist = await createRepo(collection).getAlertsById(id);
   if (!exist) throw errorCreator(404, "Alert not found");

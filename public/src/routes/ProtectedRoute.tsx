@@ -4,7 +4,7 @@ import { useAuthStore } from "../store/authStore";
 import type { Role } from "../types/user";
 
 interface ProtectedRouteProps {
-  roles?: Role[];
+  roles?: Role;
 }
 
 const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
@@ -14,7 +14,7 @@ const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
 
   useEffect(() => {
     setMe();
-  }, [token, user, setMe]);
+  }, [token]);
 
   if (!token) return <Navigate to="/login" replace />;
   if (!user) return <p>Loading...</p>;

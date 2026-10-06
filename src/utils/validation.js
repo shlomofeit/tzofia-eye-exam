@@ -15,7 +15,10 @@ export const alertSchema = z.object({
     ["North", "South", "Center"],
     "Arena must be North, South or Center",
   ),
-  status: z.enum(["Active", "Handled"], "Status must be Active or Handled"),
+  status: z.enum(
+    ["Active", "Handled", "False Alarm"],
+    "Status must be Active, Handled or False Alarm",
+  ),
   lon: z
     .number("Lon must be a number")
     .min(-180, "Lon must be greater than -180")

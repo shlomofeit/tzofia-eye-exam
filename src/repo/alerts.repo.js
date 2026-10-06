@@ -2,8 +2,9 @@ import { ObjectId } from "mongodb";
 
 export function createRepo(collection) {
   async function createAlert(obj) {
+    const now = new Date();
     const { _id, ...alert } = obj;
-    const result = await collection.insertOne(obj);
+    const result = await collection.insertOne({ createdAt: now, ...obj });
 
     return { id: result.insertedId.toString(), ...alert };
   }

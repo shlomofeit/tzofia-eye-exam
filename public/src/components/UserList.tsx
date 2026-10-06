@@ -2,10 +2,11 @@ import type { User } from "../types/user";
 
 interface UserListProps {
   users: User[];
+  currentUserId: string;
   onDelete: (id: string) => void;
 }
 
-const UserList = ({ users, onDelete }: UserListProps) => {
+const UserList = ({ users, currentUserId, onDelete }: UserListProps) => {
   if (users.length === 0) return <p>No users yet...</p>;
 
   return (
@@ -27,9 +28,11 @@ const UserList = ({ users, onDelete }: UserListProps) => {
             <td>{user.role}</td>
             <td>{user.assignedArena}</td>
             <td className="actions">
-              <button type="button" onClick={() => onDelete(user.id)}>
-                Delete
-              </button>
+              {user.id !== currentUserId && (
+                <button type="button" onClick={() => onDelete(user.id)}>
+                  Delete
+                </button>
+              )}
             </td>
           </tr>
         ))}

@@ -17,6 +17,7 @@ export interface AlertInput {
 
 export interface Alert extends AlertInput {
   id: string;
+  createdAt: number;
 }
 
 export interface AlertFormValues {

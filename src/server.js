@@ -5,6 +5,7 @@ import helmet from "helmet";
 import { getDb } from "./db/db.js";
 import { errorHandler, notFound } from "./utils/errorHandler.js";
 import alertsRoute from "./routes/alerts.route.js";
+import authRoute from "./routes/auth.route.js";
 
 const PORT = process.env.PORT || 3001;
 
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/auth", authRoute);
 app.use("/api", alertsRoute);
 
 app.use(notFound);
