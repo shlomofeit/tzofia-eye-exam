@@ -8,7 +8,7 @@ export function authenticate(req, res, next) {
 
   const token = authHeader.split(" ")[1];
   try {
-    req.user = verifyToken(req.token);
+    req.user = verifyToken(token);
   } catch {
     throw errorCreator(401, "Invalid token");
   }
