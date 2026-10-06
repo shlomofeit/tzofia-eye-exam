@@ -27,7 +27,11 @@ const AddAlertPage = () => {
     <>
       <h2>Add alert</h2>
       {error && <p className="error">{error}</p>}
-      <AlertAddForm newValues={emtyValues} onSubmit={handleSubmit} />
+      <AlertAddForm
+        buttonText="Add"
+        fieldValue={emtyValues}
+        onSubmit={handleSubmit}
+      />
     </>
   );
 };
