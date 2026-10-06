@@ -4,6 +4,7 @@ import AlertList from "../components/AlertList";
 import AlertsMap from "../components/AlertsMap";
 import { useAlertsStore } from "../store/alertsStore";
 import { filterAlerts } from "../utils/alertsFilter";
+import { useAuthStore } from "../store/authStore";
 
 export default function HomePage() {
   const alerts = useAlertsStore((state) => state.alerts);
@@ -14,6 +15,8 @@ export default function HomePage() {
   const priority = useAlertsStore((state) => state.priority);
   const setAlerts = useAlertsStore((state) => state.setAlerts);
   const removeAlert = useAlertsStore((state) => state.removeAlert);
+  const user = useAuthStore((state) => state.user);
+  const multiArenaThreat = useAlertsStore((state) => state.multiArenaThreat);
 
   useEffect(() => {
     setAlerts();
@@ -27,12 +30,17 @@ export default function HomePage() {
 
   return (
     <>
+      {multiArenaThreat && <h3 className="threat">התראת התקפה רב זירתית</h3>}
       <h2>{count}</h2>
       <AlertFilters />
       {isLoading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
       <AlertsMap alerts={filteredAlerts} height={420} />
-      <AlertList alerts={filteredAlerts} onDelete={removeAlert} />
+      <AlertList
+        alerts={filteredAlerts}
+        canDelete={user?.role !== "general_user"}
+        onDelete={removeAlert}
+      />
     </>
   );
 }

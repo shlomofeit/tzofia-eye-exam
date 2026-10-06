@@ -10,6 +10,21 @@ import { getAuth } from "./authStore";
 
 const BASE_URL = "http://localhost:3001/api/alerts";
 
+const arenas = ["North", "South", "Center"];
+const THREAT_WINDOW_MS = 15000;
+
+export function isMultiArenaThreat(alerts: Alert[]): boolean {
+  const now = Date.now();
+  const recent = alerts.filter(
+    (alert) =>
+      alert.priority === "Critical" &&
+      alert.status === "Active" &&
+      now - alert.createdAt <= THREAT_WINDOW_MS,
+  );
+
+  return arenas.every((arena) => recent.some((alert) => alert.arena === arena));
+}
+
 interface AlertsState {
   isLoading: boolean;
   error: string | null;
@@ -18,6 +33,7 @@ interface AlertsState {
   arena: ArenaFilter;
   priority: PriorityFilter;
   selectedAlert: Alert | null;
+  multiArenaThreat: boolean;
   setAlerts: () => void;
   removeAlert: (id: string) => void;
   setSearch: (id: string) => void;
@@ -42,12 +58,18 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
   arena: "All",
   priority: "All",
   selectedAlert: null,
+  multiArenaThreat: false,
 
   setAlerts: async () => {
     set({ isLoading: true, error: null });
     try {
       const res = await axios.get(BASE_URL, getAuth());
-      set({ alerts: res.data.data, isLoading: false });
+      const alerts = res.data.data;
+      set({
+        alerts,
+        multiArenaThreat: isMultiArenaThreat(alerts),
+        isLoading: false,
+      });
     } catch (err) {
       const msg = getErrorDetails(err, "Failed to fetch alerts");
       set({
