@@ -16,7 +16,13 @@ export function userRepo(collection) {
   async function getUsers() {
     const result = await collection.find({}).toArray();
     if (!result) return [];
-    result.map((user) => ((user.id = user._id.toString()), delete user._id));
+    result.map(
+      (user) => (
+        (user.id = user._id.toString()),
+        delete user._id,
+        delete user.password
+      ),
+    );
 
     return result;
   }
