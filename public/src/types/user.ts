@@ -11,8 +11,12 @@ export interface UserInput {
   assignedArena: AssignedArena;
 }
 
-export interface User extends UserInput {
+export interface User {
   id: string;
+  username: string;
+  email: string;
+  role: Role;
+  assignedArena: AssignedArena;
 }
 
 export interface UserFormErrors {
