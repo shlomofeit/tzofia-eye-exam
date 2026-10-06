@@ -24,6 +24,13 @@ interface AlertsState {
   setPriority: (priority: PriorityFilter) => void;
   setNewAlert: (alert: AlertInput) => void;
   setSelectedAlert: (id: string) => void;
+  setUpdateAlert: (id: string, alert: AlertInput) => void;
+}
+
+function getErrorDetails(err: unknown, other: string): string {
+  if (axios.isAxiosError(err))
+    return err.response?.data?.error || err.response?.data?.message || other;
+  return other;
 }
 
 export const useAlertsStore = create<AlertsState>()((set) => ({
@@ -40,11 +47,8 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
     try {
       const res = await axios.get(BASE_URL);
       set({ alerts: res.data.data, isLoading: false });
-    } catch (err: any) {
-      const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
-        "Failed to fetch alerts";
+    } catch (err) {
+      const msg = getErrorDetails(err, "Failed to fetch alerts");
       set({
         error: msg,
         isLoading: false,
@@ -63,11 +67,8 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
         isLoading: false,
       }));
       return newAlert;
-    } catch (err: any) {
-      const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
-        "Failed to fetch alerts";
+    } catch (err) {
+      const msg = getErrorDetails(err, "Failed to fetch alerts");
       set({
         error: msg,
         isLoading: false,
@@ -82,11 +83,8 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
       set((state) => ({
         alerts: state.alerts.filter((alert) => alert.id !== id),
       }));
-    } catch (err: any) {
-      const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
-        "Failed to fetch alerts";
+    } catch (err) {
+      const msg = getErrorDetails(err, "Failed to fetch alerts");
       set({
         error: msg,
         isLoading: false,
@@ -99,11 +97,24 @@ export const useAlertsStore = create<AlertsState>()((set) => ({
     try {
       const res = await axios.get(`${BASE_URL}/${id}`);
       set({ selectedAlert: res.data.data, isLoading: false });
-    } catch (err: any) {
-      const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
-        "Failed to fetch alert";
+    } catch (err) {
+      const msg = getErrorDetails(err, "Failed to fetch alerts");
+      set({
+        error: msg,
+        isLoading: false,
+      });
+    }
+  },
+
+  setUpdateAlert: async (id, alert) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axios.put(`${BASE_URL}/${id}`, alert);
+      set((state) => ({
+        alerts: state.alerts.map((a) => (a.id === id ? res.data.data : a)),
+      }));
+    } catch (err) {
+      const msg = getErrorDetails(err, "Failed to fetch alerts");
       set({
         error: msg,
         isLoading: false,
