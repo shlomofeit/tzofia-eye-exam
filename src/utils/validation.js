@@ -27,3 +27,26 @@ export const alertSchema = z.object({
 });
 
 export const updateAlertSchema = alertSchema.partial();
+
+export const userSchema = z.object({
+  username: z
+    .string("Username must be a string")
+    .min(2, "Username must have at least 2 charaterce"),
+  password: z
+    .string("Password must be a string")
+    .min(6, "Password must have at least 6 charaterce"),
+  email: z.email("Invalid email address"),
+  role: z.enum(
+    ["arena_user", "general_user", "admin"],
+    "Role must be arena_user, general_user or admin",
+  ),
+  assignedArena: z.enum(
+    ["North", "South", "Center", "All"],
+    "AssignedArena must be North, South, Center or All",
+  ),
+});
+
+export const loginSchema = z.object({
+  username: z.string("Username must be a string"),
+  password: z.string("Password must be a string"),
+});
